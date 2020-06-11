@@ -1,0 +1,9 @@
+Passos:
+
+1 - Alterar o docker-compose.yml
+2 - Alterar o crypto-config.yaml para o número de peers que deseja
+3 - Executar generateCryptoMaterial.sh
+3 - Executar genesislockAndChannelTransaction.sh
+4 - Alterar o createPeerAdminCard.sh para colocar fetchs e joins dos peers
+5 - Alterar o startFabric.sh para pegar todas as chaves
+6 - Rodar o startFabric.sh e o CreatePeerAdminCard.sh

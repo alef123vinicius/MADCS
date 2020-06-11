@@ -1,0 +1,105 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace org.example.prescription
+
+enum ProductType{
+  o PRESCRIPTION
+}
+
+enum PrescriptionStatus {
+  o CREATED
+  o VALID
+  o INVALID
+  o USED
+}
+
+//actions
+asset Prescription identified by prescriptionId {
+  o String prescriptionId
+  o ProductType type
+  o PrescriptionStatus status
+  o String medicaments
+  o String orientation
+  o Double numberOfUses
+  o DateTime issueDate
+  o DateTime dueDate
+  --> Contract contract
+}
+
+asset EventAlert identified by eventId {
+  o String eventId
+  o String message
+  o DateTime timestamp
+}
+
+//contracts
+asset Contract identified by contractId {
+  o String contractId
+  --> Medical medical
+  --> Pharmaceutic pharmaceutic
+  --> Patient patient
+  o DateTime minDate
+  o DateTime maxDate
+  o Double maxUsePrescription
+  o Double minPenaltyFactor
+  o Double maxPenaltyFactor
+}
+//participants types
+concept Address{
+  o String city optional
+  o String country
+  o String street optional
+}
+
+abstract participant Business identified by email{
+  o String email
+  o Address address
+  o Double accountBalance
+}
+
+participant Medical extends Business{
+}
+
+participant Pharmaceutic extends Business{
+}
+
+participant Patient extends Business{
+}
+//transactions types
+abstract transaction PrescriptionTransaction {
+  --> Prescription prescription
+}
+
+transaction DispensingReceived extends PrescriptionTransaction {
+}
+
+transaction DispensingAllPrescriptions{
+  --> Prescription [] prescriptions
+}
+
+transaction SetupDemo {
+}
+
+transaction Testing{
+}
+
+transaction EmitAlertAllPeers{
+  --> EventAlert alert
+  --> Prescription prescription 
+}
